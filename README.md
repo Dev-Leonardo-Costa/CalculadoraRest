@@ -1,3 +1,3 @@
 # CalculadoraRest
-aprendizado na udemy. 
-vamos desenvolver uma Calculadora com os conceitos rest 
+Aprendizado na udemy. 
+Vamos desenvolver uma calculadora com os conceitos rest 
