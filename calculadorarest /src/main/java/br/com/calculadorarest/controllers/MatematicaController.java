@@ -1,7 +1,8 @@
 package br.com.calculadorarest.controllers;
 
 import br.com.calculadorarest.exceptions.OperacaoMatematicaNaoSuportada;
-import org.springframework.web.bind.annotation.GetMapping;
+import br.com.calculadorarest.servico.MatematicaService;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -10,13 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MatematicaController {
 
+    private MatematicaService matematica = new MatematicaService();
+
     @RequestMapping(value = "/somar/{primeiroNumero}/{segundoNumero}", method = RequestMethod.GET)
     public Double soma(@PathVariable("primeiroNumero") String primeiroNumero, @PathVariable("segundoNumero") String segundoNumero) throws Exception {
         if (!eNumerico(primeiroNumero) || !eNumerico(segundoNumero)) {
             throw new OperacaoMatematicaNaoSuportada("favor defina um valor numerico!");
         }
-        Double soma = coverterDouble(primeiroNumero) + coverterDouble(segundoNumero);
-        return soma;
+        return matematica.somar(coverterDouble(primeiroNumero),coverterDouble(segundoNumero));
     }
 
     @RequestMapping(value = "/dividir/{primeiroNumero}/{segundoNumero}", method = RequestMethod.GET)
@@ -24,8 +26,7 @@ public class MatematicaController {
         if (!eNumerico(primeiroNumero) || !eNumerico(segundoNumero)) {
             throw new OperacaoMatematicaNaoSuportada("favor defina um valor numerico!");
         }
-        Double dividi = coverterDouble(primeiroNumero) / coverterDouble(segundoNumero);
-        return dividi;
+        return matematica.dividir(coverterDouble(primeiroNumero), coverterDouble(segundoNumero));
     }
 
     @RequestMapping(value = "/multiplicar/{primeiroNumero}/{segundoNumero}", method = RequestMethod.GET)
@@ -33,8 +34,8 @@ public class MatematicaController {
         if (!eNumerico(primeiroNumero) || !eNumerico(segundoNumero)) {
             throw new OperacaoMatematicaNaoSuportada("favor defina um valor numerico!");
         }
-        Double multiplica = coverterDouble(primeiroNumero) * coverterDouble(segundoNumero);
-        return multiplica;
+       
+        return matematica.multiplicar(coverterDouble(primeiroNumero), coverterDouble(segundoNumero));
     }
 
     @RequestMapping(value = "/subtrair/{primeiroNumero}/{segundoNumero}", method = RequestMethod.GET)
@@ -42,8 +43,8 @@ public class MatematicaController {
         if (!eNumerico(primeiroNumero) || !eNumerico(segundoNumero)) {
             throw new OperacaoMatematicaNaoSuportada("favor defina um valor numerico!");
         }
-        Double subtrai = coverterDouble(primeiroNumero) - coverterDouble(segundoNumero);
-        return subtrai;
+       
+        return matematica.subtrair(coverterDouble(primeiroNumero), coverterDouble(segundoNumero));
     }
 
     @RequestMapping(value = "/media/{notaum}/{notadois}/{notatres}", method = RequestMethod.GET)
@@ -51,9 +52,7 @@ public class MatematicaController {
         if (!eNumerico(notaum) || !eNumerico(notadois) || !eNumerico(notatres)) {
             throw new OperacaoMatematicaNaoSuportada("favor defina um valor numerico!");
         }
-        Double media = coverterDouble(notaum) + coverterDouble(notadois) + coverterDouble(notatres);
-        Double resultadoMedia = media / 3;
-        return resultadoMedia;
+        return matematica.media(coverterDouble(notaum), coverterDouble(notadois), coverterDouble(notatres));
     }
 
     @RequestMapping(value = "/raiz/{numero}", method = RequestMethod.GET)
@@ -61,7 +60,7 @@ public class MatematicaController {
         if (!eNumerico(numero)) {
             throw new OperacaoMatematicaNaoSuportada("favor defina um valor numerico!");
         }
-        return Math.sqrt(coverterDouble(numero));
+        return matematica.raizQuadrada(coverterDouble(numero));
     }
 
     private Double coverterDouble(String strNumero) {
